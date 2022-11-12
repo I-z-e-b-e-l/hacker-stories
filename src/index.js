@@ -2,12 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Pony from './Pony'
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
+  </React.StrictMode>
+);
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     {/* <h1>I'm a pony!</h1> */}
+//     <Pony />
+//   </React.StrictMode>,
+//   document.getElementById('pony')
+// );
+
+const newroot = ReactDOM.createRoot(document.getElementById('pony'));
+newroot.render(
+  <React.StrictMode>
+    <Pony />
   </React.StrictMode>
 );
 

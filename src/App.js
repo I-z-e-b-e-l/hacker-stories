@@ -15,11 +15,9 @@ const list = [
   }
 ]
 
-
-function App() {
+function List(){
   return (
     <div>
-      <h1>My Hacker Stories</h1>
       <ul>
         {list.map(function(item){
           return(
@@ -31,10 +29,27 @@ function App() {
           );
         })}
       </ul>
+    </div>
+  )
+}
 
+function Search(){
+  return(
+    <div>
       <label htmlFor='search'>Search:</label>
       <input id="search" type='text'/>
+    </div>
+  )
+}
 
+
+function App() {
+  return (
+    <div>
+      <h1>My Hacker Stories</h1>
+      
+      <List />
+      <Search />
 
     </div>
   );
