@@ -35,12 +35,9 @@ function Search(){
   // insert handler functions here:
 
   const handleChange = (event) => {
-    //console logs every aspect of the event
-    console.log(event)
     // console.logs individual letters typed in
     console.log(event.nativeEvent.data)
-    // console.logs all letters typed in
-    console.log(event.target.value)
+    console.log(event)
   }
 
   const handleMouseOver = (event) => {
