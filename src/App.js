@@ -32,7 +32,9 @@ const Item = (props) => {
 
 function Search(){
 
-  // insert handler functions here:
+  const [searchTerm, setSearchTerm] = React.useState("anything you type above");
+
+// insert handler functions here:
 
   const handleChange = (event) => {
     //console logs every aspect of the event
@@ -41,6 +43,8 @@ function Search(){
     console.log(event.nativeEvent.data)
     // console.logs all letters typed in
     console.log(event.target.value)
+
+    setSearchTerm(event.target.value);
   }
 
   const handleMouseOver = (event) => {
@@ -51,6 +55,8 @@ function Search(){
     <div>
       <label htmlFor='search'>Search:</label>
       <input id="search" type='text' onChange={handleChange} onMouseOver={handleMouseOver}/>
+
+      <p>Searching for: {searchTerm}</p>
     </div>
   )
 }
