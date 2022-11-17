@@ -1,5 +1,60 @@
 import * as React from 'react';
 
+function App() {
+  
+  const stories = [
+    {
+      title: 'React',
+      url: 'https://reactjs.org',
+      num_comments: 345,
+      id: 1
+    },
+    {
+      title: 'Redux',
+      url: 'httsp://redux.js.org',
+      num_comments: 233,
+      id: 2
+    }
+  ];
+
+  const javascriptLibraries = [
+    {
+      title: 'JQuery',
+      url: 'https://jquery.org',
+      num_comments: 444,
+      id: 0
+    },
+    {
+      title: 'Angular',
+      url: 'httsp://angularjs.org',
+      num_comments: 233,
+      id: 4
+    }
+  ];
+
+  const [searchTerm, setSearchTerm] = React.useState("anything you type above");
+
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+    setSearchTerm(event.target.value);
+  }
+
+  //filter
+  const searchedStories = stories.filter(function (story){
+    return story.title.toLowerCase().includes(searchTerm)
+  });
+
+  return (
+    <div>
+      <h1>My Hacker Stories</h1>
+      {/*This list now inlcudes only the filtered searchedStories, rather than stories*/}
+      <List list={searchedStories} title="React Ecosystem" key={stories.id}/>
+      <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
+      <hr />
+    </div>
+  );
+};
 
 
 function List(props){
@@ -8,15 +63,12 @@ function List(props){
       <h2>{props.title}</h2>
       <ul>
         {props.list.map(function(librarystory){
-          return(<Item arrayitem={librarystory} />);
+          return(<Item arrayitem={librarystory} key={librarystory.id}/>);
         })}
       </ul>
     </div>
   );
 }
-
-// a few different ways to write this in 1.3 "React Props"
-
 
 const Item = (props) => {
   const item=props.arrayitem;
@@ -30,80 +82,29 @@ const Item = (props) => {
   );
 }
 
-function Search(){
+function Search(props){
 
-  const [searchTerm, setSearchTerm] = React.useState("anything you type above");
-
-// insert handler functions here:
+  // const [searchTerm, setSearchTerm] = React.useState("anything you type above"); - moved up to App: lifting state
 
   const handleChange = (event) => {
-    //console logs every aspect of the event
-    console.log(event)
-    // console.logs individual letters typed in
-    console.log(event.nativeEvent.data)
-    // console.logs all letters typed in
-    console.log(event.target.value)
 
-    setSearchTerm(event.target.value);
-  }
+    // setSearchTerm(event.target.value); -removed
 
-  const handleMouseOver = (event) => {
-    console.log(event)
+    props.onSearch(event);
+
   }
 
   return(
     <div>
-      <label htmlFor='search'>Search:</label>
-      <input id="search" type='text' onChange={handleChange} onMouseOver={handleMouseOver}/>
+      <label htmlFor='search'>Search: </label>
+      <input id="search" type='text' onChange={handleChange} />
 
-      <p>Searching for: {searchTerm}</p>
+      <p>Searching for: {props.searchTerm}</p>
     </div>
   )
 }
 
 
-function App() {
 
-  const stories = [
-    {
-      title: 'React',
-      url: 'https://reactjs.org',
-      num_comments: 345,
-      objectID: 1
-    },
-    {
-      title: 'Redux',
-      url: 'httsp://redux.js.org',
-      num_comments: 233,
-      objectID: 2
-    }
-  ];
-
-  const javascriptLibraries = [
-    {
-      title: 'JQuery',
-      url: 'https://jquery.org',
-      num_comments: 444,
-      objectID: 0
-    },
-    {
-      title: 'Angular',
-      url: 'httsp://angularjs.org',
-      num_comments: 233,
-      objectID: 4
-    }
-  ];
-
-  return (
-    <div>
-      <h1>My Hacker Stories</h1>
-      
-      <List list={stories} title="React Ecosystem" />
-      <List list={javascriptLibraries} title="JS Libraries" />
-      <Search />
-      <hr />
-    </div>
-  );
-};
 
 export default App;
