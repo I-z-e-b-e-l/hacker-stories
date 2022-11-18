@@ -41,7 +41,7 @@ function App() {
 
   //filter
   const searchedStories = stories.filter(function (story){
-    return story.title.toLowerCase().includes(searchTerm)
+    return story.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
   });
 
   return (
@@ -84,20 +84,22 @@ const Item = (props) => {
 
 function Search(props){
 
-  // const [searchTerm, setSearchTerm] = React.useState("anything you type above"); - moved up to App: lifting state
+  // Is this still used?
+    // const handleChange = (event) => {
+    //   props.onSearch(event);
 
-  const handleChange = (event) => {
-
-    // setSearchTerm(event.target.value); -removed
-
-    props.onSearch(event);
-
-  }
+    // }
 
   return(
     <div>
       <label htmlFor='search'>Search: </label>
-      <input id="search" type='text' onChange={handleChange} />
+      <input 
+        id="search" 
+        type='text'
+        value={props.searchTerm} 
+        // onChange={handleChange} 
+        onChange={props.onSearch}
+      />
 
       <p>Searching for: {props.searchTerm}</p>
     </div>
