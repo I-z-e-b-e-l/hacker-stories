@@ -41,8 +41,9 @@ function App() {
 
   //filter
   const searchedStories = stories.filter(function (story){
-    return story.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase())
   });
+
 
   return (
     <div>
@@ -50,45 +51,33 @@ function App() {
       {/*This list now inlcudes only the filtered searchedStories, rather than stories*/}
       <List list={searchedStories} title="React Ecosystem" key={stories.id}/>
       <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
-      <Search onSearch={handleSearch} searchTerm={searchTerm} />
+      <Search search={searchTerm} onSearch={handleSearch} />
       <hr />
     </div>
   );
 };
 
-
-function List(props){
+function List({list}){
   return (
-    <div>
-      <h2>{props.title}</h2>
       <ul>
-        {props.list.map(function(librarystory){
-          return(<Item arrayitem={librarystory} key={librarystory.id}/>);
-        })}
+        {list.map((librarystory) => (
+          <Item key={librarystory.id} arrayitem={librarystory} />
+        ))}
       </ul>
-    </div>
   );
 }
 
-const Item = (props) => {
-  const item=props.arrayitem;
-
-  return (
-    <li key={item.objectID}>
+const Item = ({arrayitem}) => {
+  return(
+    <li>
     {/* link does not work? */}
-      <a href='{item.url}'>{item.title}</a>
-      <p>Number of comments: {item.num_comments}</p>
+      <a href='{arrayitem.url}'>{arrayitem.title}</a>
+      <p>Number of comments: {arrayitem.num_comments}</p>
     </li>
-  );
+  )
 }
 
-function Search(props){
-
-  // Is this still used?
-    // const handleChange = (event) => {
-    //   props.onSearch(event);
-
-    // }
+function Search({ search, onSearch}){
 
   return(
     <div>
@@ -96,12 +85,11 @@ function Search(props){
       <input 
         id="search" 
         type='text'
-        value={props.searchTerm} 
-        // onChange={handleChange} 
-        onChange={props.onSearch}
+        value={search} 
+        onChange={onSearch}
       />
 
-      <p>Searching for: {props.searchTerm}</p>
+      <p>Searching for: {search}</p>
     </div>
   )
 }
