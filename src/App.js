@@ -57,17 +57,20 @@ function App() {
 
   // a custom hook that is reuseable
 
-  const useSemiPersistentState = () => {
-    const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search')||"")
 
-    React.useEffect(()=>{
-      localStorage.setItem('search', searchTerm);
-    }, [searchTerm] );
+  //I'm just slightly confised about key
+  // and there's a warning:  "React Hook React.useEffect has a missing dependency: 'key'. Either include it or remove the dependency array"
+  const useSemiPersistentState = (key, initialState) => {
+    const [value, setValue] = React.useState(localStorage.getItem(key)||initialState)
 
-    return [searchTerm, setSearchTerm];
+    React.useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value] );
+
+    return [value, setValue];
   }
 
-  const [searchTerm, setSearchTerm] = useSemiPersistentState();
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
   const handleSearch = (event) => {
     console.log(event.target.value);
