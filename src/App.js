@@ -32,7 +32,42 @@ function App() {
     }
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState("anything you type above");
+  //useEffect hook used to save the value of the search input in localStorage
+
+        // const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
+
+        // React.useEffect(() => {
+        //   localStorage.setItem('search', searchTerm);
+        // }, [searchTerm])
+
+
+  // a custom hook that combines the two finctions in the OG version into one function     
+
+      // const useSemiPersistentState = () => {
+      //   const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search')||"")
+
+      //   React.useEffect(()=>{
+      //     localStorage.setItem('search', searchTerm);
+      //   }, [searchTerm] );
+
+      //   return [searchTerm, setSearchTerm];
+      // }
+
+      // const [searchTerm, setSearchTerm] = useSemiPersistentState();
+
+  // a custom hook that is reuseable
+
+  const useSemiPersistentState = () => {
+    const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search')||"")
+
+    React.useEffect(()=>{
+      localStorage.setItem('search', searchTerm);
+    }, [searchTerm] );
+
+    return [searchTerm, setSearchTerm];
+  }
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState();
 
   const handleSearch = (event) => {
     console.log(event.target.value);
@@ -98,3 +133,9 @@ function Search({ search, onSearch}){
 
 
 export default App;
+
+
+
+// npx create-react-app . --template minimal
+//api.thecatapi.com
+
