@@ -32,31 +32,6 @@ function App() {
     }
   ];
 
-  //useEffect hook used to save the value of the search input in localStorage
-
-        // const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
-
-        // React.useEffect(() => {
-        //   localStorage.setItem('search', searchTerm);
-        // }, [searchTerm])
-
-
-  // a custom hook that combines the two finctions in the OG version into one function     
-
-      // const useSemiPersistentState = () => {
-      //   const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search')||"")
-
-      //   React.useEffect(()=>{
-      //     localStorage.setItem('search', searchTerm);
-      //   }, [searchTerm] );
-
-      //   return [searchTerm, setSearchTerm];
-      // }
-
-      // const [searchTerm, setSearchTerm] = useSemiPersistentState();
-
-  // a custom hook that is reuseable
-
 
   //I'm just slightly confised about key
   // and there's a warning:  "React Hook React.useEffect has a missing dependency: 'key'. Either include it or remove the dependency array"
@@ -86,14 +61,37 @@ function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      {/*This list now inlcudes only the filtered searchedStories, rather than stories*/}
       <List list={searchedStories} title="React Ecosystem" key={stories.id}/>
       <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
-      <Search search={searchTerm} onSearch={handleSearch} />
+      {/* <Search search={searchTerm} onSearch={handleSearch} /> */}
+
+      <InputWithLabel 
+        id = "search"
+        // label = "search"
+        value = {searchTerm}
+        onInputChange = {handleSearch}
+      >
+        <strong>Search: </strong>
+      </InputWithLabel>
+      {/* <p>Searching for: {search}</p> */}
       <hr />
     </div>
   );
 };
+
+
+const InputWithLabel = ({id, value, type="text", onInputChange, children }) =>(
+  <React.Fragment>
+  <label htmlFor={id}> {children} </label>
+  <input 
+    id= {id}
+    type={type}
+    value={value} 
+    onChange={onInputChange}
+  />
+  </React.Fragment>
+
+)
 
 function List({list}){
   return (
@@ -115,22 +113,22 @@ const Item = ({arrayitem}) => {
   )
 }
 
-function Search({ search, onSearch}){
+// function Search({ search, onSearch}){
 
-  return(
-    <div>
-      <label htmlFor='search'>Search: </label>
-      <input 
-        id="search" 
-        type='text'
-        value={search} 
-        onChange={onSearch}
-      />
+//   return(
+//     <div>
+//       <label htmlFor='search'>Search: </label>
+//       <input 
+//         id="search" 
+//         type='text'
+//         value={search} 
+//         onChange={onSearch}
+//       />
 
-      <p>Searching for: {search}</p>
-    </div>
-  )
-}
+//       <p>Searching for: {search}</p>
+//     </div>
+//   )
+// }
 
 
 
