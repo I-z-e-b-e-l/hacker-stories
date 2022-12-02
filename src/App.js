@@ -70,6 +70,7 @@ function App() {
         // label = "search"
         value = {searchTerm}
         onInputChange = {handleSearch}
+        isFocused
       >
         <strong>Search: </strong>
       </InputWithLabel>
