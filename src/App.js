@@ -80,18 +80,30 @@ function App() {
 };
 
 
-const InputWithLabel = ({id, value, type="text", onInputChange, children }) =>(
-  <React.Fragment>
-  <label htmlFor={id}> {children} </label>
-  <input 
-    id= {id}
-    type={type}
-    value={value} 
-    onChange={onInputChange}
-  />
-  </React.Fragment>
+const InputWithLabel = ({id, value, type="text", onInputChange, isFocused, children }) => {
+  const inputRef = React.useRef();
+  React.useEffect(()=> {
+    if (isFocused) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
 
-)
+  return (
+    <React.Fragment>
+      <label htmlFor={id}> {children} </label>
+      <input 
+        ref={inputRef}
+        id= {id}
+        type={type}
+        value={value} 
+        onChange={onInputChange}
+        // autoFocus
+      />
+    </React.Fragment>
+  );
+};
+
+
 
 function List({list}){
   return (
