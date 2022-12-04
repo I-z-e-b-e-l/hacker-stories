@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-function App() {
-  
-  const stories = [
+  const initialStories = [
     {
       title: 'React',
       url: 'https://reactjs.org',
@@ -17,6 +15,8 @@ function App() {
     }
   ];
 
+function App() {
+  
   const javascriptLibraries = [
     {
       title: 'JQuery',
@@ -47,6 +47,17 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
+  const [stories, setStories] = React.useState(initialStories)
+
+  const handleRemoveStory = item => {
+    const newStories = stories.filter(
+      story => item.id !== story.id
+    );
+
+    setStories(newStories)
+  }
+
+
   const handleSearch = (event) => {
     console.log(event.target.value);
     setSearchTerm(event.target.value);
@@ -61,20 +72,17 @@ function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <List list={searchedStories} title="React Ecosystem" key={stories.id}/>
+      <List list={searchedStories} title="React Ecosystem" key={stories.id} onRemoveItem={handleRemoveStory}/>
       <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
-      {/* <Search search={searchTerm} onSearch={handleSearch} /> */}
 
       <InputWithLabel 
         id = "search"
-        // label = "search"
         value = {searchTerm}
         onInputChange = {handleSearch}
         isFocused
       >
-        <strong>Search: </strong>
+        <strong>Searching for: </strong>
       </InputWithLabel>
-      {/* <p>Searching for: {search}</p> */}
       <hr />
     </div>
   );
@@ -98,7 +106,6 @@ const InputWithLabel = ({id, value, type="text", onInputChange, isFocused, child
         type={type}
         value={value} 
         onChange={onInputChange}
-        // autoFocus
       />
     </React.Fragment>
   );
@@ -106,43 +113,32 @@ const InputWithLabel = ({id, value, type="text", onInputChange, isFocused, child
 
 
 
-function List({list}){
+function List({list, onRemoveItem}){
   return (
       <ul>
         {list.map((librarystory) => (
-          <Item key={librarystory.id} arrayitem={librarystory} />
+          <Item 
+            key={librarystory.id} 
+            arrayitem={librarystory} 
+            onRemoveItem={onRemoveItem}  
+          />
         ))}
       </ul>
   );
 }
 
-const Item = ({arrayitem}) => {
+const Item = ({arrayitem, onRemoveItem}) => {
   return(
     <li>
     {/* link does not work? */}
       <a href='{arrayitem.url}'>{arrayitem.title}</a>
       <p>Number of comments: {arrayitem.num_comments}</p>
+      <button type="button" onClick={()=>onRemoveItem(arrayitem)}>
+        Remove
+      </button>
     </li>
   )
 }
-
-// function Search({ search, onSearch}){
-
-//   return(
-//     <div>
-//       <label htmlFor='search'>Search: </label>
-//       <input 
-//         id="search" 
-//         type='text'
-//         value={search} 
-//         onChange={onSearch}
-//       />
-
-//       <p>Searching for: {search}</p>
-//     </div>
-//   )
-// }
-
 
 
 
