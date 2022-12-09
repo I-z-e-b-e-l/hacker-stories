@@ -57,11 +57,17 @@ function App() {
 
   const [stories, setStories] = React.useState([]);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const [isError, setIsError] = React.useState(false);
 
   React.useEffect(()=>{
+    setIsLoading(true);
     getAsynchStories().then(result=> {
       setStories(result.data.stories)
-    });
+      setIsLoading(false);
+    })
+    .catch(()=> setIsError(true))
   }, []);
 
   const handleRemoveStory = item => {
@@ -87,9 +93,7 @@ function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <List list={searchedStories} title="React Ecosystem" key={stories.id} onRemoveItem={handleRemoveStory}/>
-      <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
-
+      
       <InputWithLabel 
         id = "search"
         value = {searchTerm}
@@ -98,6 +102,13 @@ function App() {
       >
         <strong>Searching for: </strong>
       </InputWithLabel>
+
+      {isError && <p>Uh oh...Something went wrong</p>}
+      {isLoading ? (<p>Loading...</p>): (<List list={searchedStories} title="React Ecosystem" key={stories.id} onRemoveItem={handleRemoveStory}/>)}
+
+      <List list={javascriptLibraries} title="JS Libraries" key={javascriptLibraries.id}/>
+
+
       <hr />
     </div>
   );
