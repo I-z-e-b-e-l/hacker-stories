@@ -16,6 +16,14 @@ import * as React from 'react';
   ];
 
 function App() {
+
+  const getAsynchStories = () =>
+    new Promise (resolve =>
+      setTimeout (
+        () => resolve ({data:{stories: initialStories}}),
+        2000
+      )
+    );
   
   const javascriptLibraries = [
     {
@@ -47,7 +55,14 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
-  const [stories, setStories] = React.useState(initialStories)
+  const [stories, setStories] = React.useState([]);
+
+
+  React.useEffect(()=>{
+    getAsynchStories().then(result=> {
+      setStories(result.data.stories)
+    });
+  }, []);
 
   const handleRemoveStory = item => {
     const newStories = stories.filter(
