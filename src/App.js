@@ -15,6 +15,20 @@ import * as React from 'react';
     }
   ];
 
+const storiesReducer = (state, action) => {
+  switch (action.type){
+    case 'SET_STORIES':
+      return action.payload;
+    case 'REMOVE_STORIES':
+      return state.filter(
+        story => action.payload.objectID !== story.objectID
+      );
+    default:
+      throw new Error();
+  }
+};
+
+
 function App() {
 
   const getAsynchStories = () =>
@@ -55,7 +69,13 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
-  const [stories, setStories] = React.useState([]);
+  // const [stories, setStories] = React.useState([]);
+
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer,
+    []
+  );
+
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -64,7 +84,11 @@ function App() {
   React.useEffect(()=>{
     setIsLoading(true);
     getAsynchStories().then(result=> {
-      setStories(result.data.stories)
+      // setStories(result.data.stories)
+      dispatchStories({
+        type:'SET_STORIES',
+        payload: result.data.stories
+      });
       setIsLoading(false);
     })
     .catch(()=> setIsError(true))
@@ -75,8 +99,12 @@ function App() {
       story => item.id !== story.id
     );
 
-    setStories(newStories)
-  }
+    // setStories(newStories)
+    dispatchStories({
+      type: 'SET_STORIES',
+      payload: newStories,
+    });
+  };
 
 
   const handleSearch = (event) => {
@@ -136,8 +164,6 @@ const InputWithLabel = ({id, value, type="text", onInputChange, isFocused, child
     </React.Fragment>
   );
 };
-
-
 
 function List({list, onRemoveItem}){
   return (
